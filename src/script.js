@@ -60,6 +60,11 @@ const sphereBody = new CANNON.Body({
   position: new CANNON.Vec3(0, 3, 0),
   shape: sphereShape,
 });
+//apply a force just once at scene start
+sphereBody.applyLocalForce(
+  new CANNON.Vec3(150, 0, 0),
+  new CANNON.Vec3(0, 0, 0),
+);
 world.addBody(sphereBody);
 
 //floor
@@ -182,6 +187,7 @@ const tick = () => {
   oldElapsedTime = elapsedTime;
 
   //update physics world
+  sphereBody.applyForce(new CANNON.Vec3(-0.5, 0.0), sphereBody.position); //constantly apply this force at the ball position (like wind)
   world.step(1 / 60, deltaTime, 3);
 
   sphere.position.copy(sphereBody.position);
@@ -197,4 +203,3 @@ const tick = () => {
 };
 
 tick();
-
